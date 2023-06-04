@@ -1,0 +1,22 @@
+{
+  "name": "controle-back",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon ./src/index.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "knex": "^2.4.2",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.3.0",
+    "node-cron": "^3.0.2",
+    "nodemon": "^2.0.22",
+    "util": "^0.12.5"
+  }
+}
