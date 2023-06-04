@@ -3,33 +3,33 @@ import React, { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../api/api";
 import { useToast } from "@chakra-ui/react";
+import jwtDecode from "jwt-decode";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const toast = useToast()
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [ user, setUser ] = useState(null);
+  const [ token, setToken ] = useState(null)
+  const [ isLoggedIn, setIsLoggedIn ] = useState(false);
 
   useEffect(() => {
-    const recoveredUser = Cookies.get("user");
-    const recoveredStatus = Cookies.get("status");
-
-    if (recoveredUser && recoveredStatus) {
-      setUser(JSON.parse(recoveredUser));
-      setIsLoggedIn(true);
+    const checkAuth = async () => {
+      const token = Cookies.get("token")
+      if(token) {
+        api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        setToken(token)
+        setIsLoggedIn(true)
+        const decodedToken = jwtDecode(token);
+        setUser(decodedToken.user);
+      } else {
+        setIsLoggedIn(false)
+      }
     }
-  }, []);
+    checkAuth()
+  }, [token])
 
-  useEffect(() => {
-    const token = Cookies.get("token");
-    if (isLoggedIn) {
-      api.defaults.headers.Authorization = `Bearer ${token}`;
-    } else {
-      api.defaults.headers.Authorization = null;
-    }
-  }, [isLoggedIn]);
 
   const expiresIn = () => {
     const expirationDate = new Date();
@@ -42,17 +42,14 @@ export const AuthProvider = ({ children }) => {
         email: email,
         senha: password,
       });
-      const { token, user, status } = response.data;
-      
+      const { token } = response.data;
       const expiresinhours = expiresIn()
       Cookies.set("token", token, { expires: expiresinhours });
-      Cookies.set("user", JSON.stringify(user));
-      Cookies.set("status", status);
-
       api.defaults.headers.Authorization = `Bearer ${token}`
-      setUser(user);
+      const decodedToken = jwtDecode(token)
+      setToken(token)
+      setUser(decodedToken.user);
       setIsLoggedIn(true);
-
       navigate("/home");
     } catch (error) {
       console.error(error);
@@ -91,10 +88,8 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     Cookies.remove("token");
-    Cookies.remove("user");
-    Cookies.remove("status");
     api.defaults.headers.Authorization = null
-
+    setToken(null)
     setUser(null);
     setIsLoggedIn(false);
 
@@ -113,6 +108,7 @@ export const AuthProvider = ({ children }) => {
         isLoggedIn,
         login,
         logout,
+        user
       }}
     >
       {children}

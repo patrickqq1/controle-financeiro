@@ -32,6 +32,20 @@ export const createUser = async (req, res) => {
   }
 };
 
+export const getUsers = async (req,res) => {
+  try {
+    const data = await db
+    .select("*")
+    .from("usuarios")
+    return res.status(200).json(data)
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({
+      message: 'Erro ao buscar tabelas'
+    })
+  }
+}
+
 export const updatePassword = async (req, res) => {
   const { userId, currentPassword, newPassword } = req.body;
 
@@ -86,17 +100,13 @@ export const getUserData = async (req, res) => {
           });
         } else {
           const token = jwt.sign(
-            { id: user.id, email: user.email, status: user.status },
+            { id: user.id, email: user.email, status: user.status, user: user.nome },
             'chave-secreta',
             { expiresIn: '1h' }
           );
   
           res.status(200).json({
-            token,
-            user: user.nome,
-            email: user.email,
-            status: user.status,
-
+            token
           });
         }
       }

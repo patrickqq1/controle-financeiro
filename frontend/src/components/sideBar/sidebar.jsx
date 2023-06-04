@@ -4,23 +4,11 @@ import { FaCoins } from "react-icons/fa"
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/authContext";
-import Cookies from "js-cookie";
 
 const SidebarDrawer = () => {
     const navigate = useNavigate()
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { authenticated , logout } = useContext(AuthContext)
-    const user = () => {
-        const userCookie = Cookies.get("user");
-        if (userCookie) {
-          let user = JSON.parse(userCookie);
-          return user;
-        } else {
-          return null;
-        }
-      };
-      
-
+    const { user , logout } = useContext(AuthContext)     
     return (
         <Flex
             position='fixed'
@@ -37,7 +25,6 @@ const SidebarDrawer = () => {
                                     boxSize='20'
                                 />
                                 Controle financeiro
-
                             </Flex>
                         </DrawerHeader>
                         <DrawerBody>
@@ -57,7 +44,7 @@ const SidebarDrawer = () => {
                                 </Link>
                                 <Button colorScheme="red" leftIcon={<FiX />} onClick={logout}>Sair</Button>
                                 <Divider />
-                                <Flex justifyContent='center' textTransform='capitalize'><Text>Bem-vindo, {user()}</Text>
+                                <Flex justifyContent='center' textTransform='capitalize'><Text>Bem-vindo, {user}</Text>
                                 </Flex>
                             </Stack>
                         </DrawerBody>

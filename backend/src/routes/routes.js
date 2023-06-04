@@ -1,7 +1,7 @@
 import express from 'express';
 import { createFinancs, deleteFinancs, editFinancs, financsSoma, insertSaldoDiario, minusSoma, renderBalance, renderFinancs } from '../controllers/financController.js';
 import { createGoal, deleteGoal, removeGoal, renderGoal, updateGoal } from '../controllers/goalController.js';
-import { createUser, getUserData } from '../controllers/usersController.js';
+import { createUser, getUserData, getUsers } from '../controllers/usersController.js';
 import { userValidation } from '../middlewares/valdidateToken.js';
 
 const router = express.Router();
@@ -21,5 +21,6 @@ router.delete("/delete/financs/:id", deleteFinancs);
 router.delete("/delete/goals/:id", deleteGoal);
 router.get("/financssoma", financsSoma);
 router.get("/minussoma", minusSoma);
+router.get("/getusers", getUsers);
 
 export default router;

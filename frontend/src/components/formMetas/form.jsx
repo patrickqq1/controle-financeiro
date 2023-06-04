@@ -56,7 +56,7 @@ const FormMetas = ({ openDesp, setOpenDesp, update }) => {
         }, 1000)
         setTimeout(() => {
           setShowAlert(false)
-        },500)
+        }, 500)
 
       }).catch((err) => {
         alert('ocorreu um erro ' + err)
@@ -89,8 +89,9 @@ const FormMetas = ({ openDesp, setOpenDesp, update }) => {
                     onChange={(e) => setDesc(e.target.value)}
                   />
                   <InputGroup>
-                    <InputLeftElement children={<FcMoneyTransfer size={25} />}
-                      bg='white' />
+                    <InputLeftElement>
+                      <FcMoneyTransfer size={25} />
+                    </InputLeftElement>
                     <Input
                       type='number'
                       isRequired
@@ -102,8 +103,9 @@ const FormMetas = ({ openDesp, setOpenDesp, update }) => {
                     />
                   </InputGroup>
                   <InputGroup>
-                    <InputLeftElement children={<FcMoneyTransfer size={25} />}
-                      bg='white' />
+                    <InputLeftElement>
+                      <FcMoneyTransfer size={25} />
+                    </InputLeftElement>
                     <Input
                       type='number'
                       isRequired

@@ -10,10 +10,20 @@ import ModalEdit from '../modalEdit/modalEdit'
 import ModalDelete from '../modalDelete/modalDelete'
 
 const TableItens = ({ getInfo, setUpdate }) => {
-    const [isOpen, setIsOpen] = useState(false)
-    const [open, setOpen] = useState(false)
-    const [editItem, setEditItem] = useState('')
+    const [openItems, setOpenItems] = useState({});
+    const handleOpen = (itemId) => {
+        setOpenItems((prevOpenItems) => ({
+            ...prevOpenItems,
+            [itemId]: true,
+        }));
+    };
 
+    const handleClose = (itemId) => {
+        setOpenItems((prevOpenItems) => ({
+            ...prevOpenItems,
+            [itemId]: false,
+        }));
+    };
     return (
         <>
             {getInfo.map((item) => (
@@ -40,29 +50,35 @@ const TableItens = ({ getInfo, setUpdate }) => {
                     <Flex alignItems="center">
                         <IconButton
                             icon={<FiTrash />}
-                            colorScheme='red'
+                            colorScheme="red"
                             mr={2}
-                            onClick={() => {
-                                setOpen(true)
-                                setEditItem(item.id)
-                            }}
+                            onClick={() => handleOpen(item.id)}
                         />
                         <IconButton
                             icon={<FiEdit />}
-                            onClick={() => {
-                                setIsOpen(true)
-                                setEditItem(item.id)
+                            onClick={() => handleOpen(item.id)}
+                            bg='orange'
+                            sx={{
+                                "&:hover": {
+                                    backgroundColor: "#001aff90",
+                                },
                             }}
-                            colorScheme='twitter'
                             ml={2}
                         />
-                        <ModalDelete isOpen={open} onClose={() => {
-                            setOpen(false)
-                            setEditItem('')
-                        }} editItem={editItem} setUpdate={setUpdate} />
-                        <ModalEdit isOpen={isOpen} onClose={() => {
-                            setIsOpen(false)
-                        }} editItem={item.id} descItem={item.descricao} setUpdate={setUpdate} oldValue={item.valor}/>
+                        <ModalDelete
+                            isOpen={openItems[item.id]}
+                            onClose={() => handleClose(item.id)}
+                            editItem={item.id}
+                            setUpdate={setUpdate}
+                        />
+                        <ModalEdit
+                            isOpen={openItems[item.id]}
+                            onClose={() => handleClose(item.id)}
+                            editItem={item.id}
+                            descItem={item.descricao}
+                            setUpdate={setUpdate}
+                            oldValue={item.valor}
+                        />
                     </Flex>
                 </Flex>
             ))}

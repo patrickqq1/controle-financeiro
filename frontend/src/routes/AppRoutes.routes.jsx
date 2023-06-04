@@ -5,6 +5,7 @@ import DayBalance from "../pages/dashboard/DayBalance";
 import Login from "../pages/login/login";
 import Register from "../pages/register/Register";
 import { AuthContext, AuthProvider } from "../context/authContext";
+import AdminDashboard from "../pages/dashboard/adminDashboard";
 
 export const Private = ({children}) => {
     const { authenticated } = useContext(AuthContext)
@@ -31,6 +32,8 @@ const RoutesApp = () => {
                     <Route exact path="/register" element={<Public><Register /></Public>} />
                     <Route exact path="/home" element={<Private><Index /></Private>} />
                     <Route exact path="/saldodia" element={<Private><DayBalance /></Private>} />
+                    <Route exact path="/admin" element={<Private><AdminDashboard /></Private>} />
+                    <Route exact path="*" element={<div>404 NOTFOUND</div>}/>
                 </Routes>
             </AuthProvider>
         </Fragment>
