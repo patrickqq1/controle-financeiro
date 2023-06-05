@@ -10,19 +10,23 @@ import ModalEdit from '../modalEdit/modalEdit'
 import ModalDelete from '../modalDelete/modalDelete'
 
 const TableItens = ({ getInfo, setUpdate }) => {
-    const [openItems, setOpenItems] = useState({});
-    const handleOpen = (itemId) => {
-        setOpenItems((prevOpenItems) => ({
-            ...prevOpenItems,
-            [itemId]: true,
-        }));
+    const [openEditModal, setOpenEditModal] = useState(null);
+    const [openDeleteModal, setOpenDeleteModal] = useState(null);
+
+    const handleOpenEditModal = (itemId) => {
+        setOpenEditModal(itemId);
     };
 
-    const handleClose = (itemId) => {
-        setOpenItems((prevOpenItems) => ({
-            ...prevOpenItems,
-            [itemId]: false,
-        }));
+    const handleCloseEditModal = () => {
+        setOpenEditModal(null);
+    };
+
+    const handleOpenDeleteModal = (itemId) => {
+        setOpenDeleteModal(itemId);
+    };
+
+    const handleCloseDeleteModal = () => {
+        setOpenDeleteModal(null);
     };
     return (
         <>
@@ -52,12 +56,12 @@ const TableItens = ({ getInfo, setUpdate }) => {
                             icon={<FiTrash />}
                             colorScheme="red"
                             mr={2}
-                            onClick={() => handleOpen(item.id)}
+                            onClick={() => handleOpenDeleteModal(item.id)}
                         />
                         <IconButton
                             icon={<FiEdit />}
-                            onClick={() => handleOpen(item.id)}
-                            bg='orange'
+                            onClick={() => handleOpenEditModal(item.id)}
+                            bg="orange"
                             sx={{
                                 "&:hover": {
                                     backgroundColor: "#001aff90",
@@ -66,14 +70,14 @@ const TableItens = ({ getInfo, setUpdate }) => {
                             ml={2}
                         />
                         <ModalDelete
-                            isOpen={openItems[item.id]}
-                            onClose={() => handleClose(item.id)}
+                            isOpen={openDeleteModal === item.id}
+                            onClose={handleCloseDeleteModal}
                             editItem={item.id}
                             setUpdate={setUpdate}
                         />
                         <ModalEdit
-                            isOpen={openItems[item.id]}
-                            onClose={() => handleClose(item.id)}
+                            isOpen={openEditModal === item.id}
+                            onClose={handleCloseEditModal}
                             editItem={item.id}
                             descItem={item.descricao}
                             setUpdate={setUpdate}

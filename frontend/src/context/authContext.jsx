@@ -11,7 +11,8 @@ export const AuthProvider = ({ children }) => {
   const toast = useToast()
   const navigate = useNavigate();
   const [ user, setUser ] = useState(null);
-  const [ token, setToken ] = useState(null)
+  const [ token, setToken ] = useState(null);
+  const [ status, setStatus ] = useState(null);
   const [ isLoggedIn, setIsLoggedIn ] = useState(false);
 
   useEffect(() => {
@@ -22,6 +23,7 @@ export const AuthProvider = ({ children }) => {
         setToken(token)
         setIsLoggedIn(true)
         const decodedToken = jwtDecode(token);
+        setStatus(decodedToken.status);
         setUser(decodedToken.user);
       } else {
         setIsLoggedIn(false)
@@ -29,7 +31,6 @@ export const AuthProvider = ({ children }) => {
     }
     checkAuth()
   }, [token])
-
 
   const expiresIn = () => {
     const expirationDate = new Date();
@@ -43,12 +44,14 @@ export const AuthProvider = ({ children }) => {
         senha: password,
       });
       const { token } = response.data;
-      const expiresinhours = expiresIn()
+      const expiresinhours = expiresIn();
       Cookies.set("token", token, { expires: expiresinhours });
-      api.defaults.headers.Authorization = `Bearer ${token}`
-      const decodedToken = jwtDecode(token)
-      setToken(token)
+      api.defaults.headers.Authorization = `Bearer ${token}`;
+  
+      const decodedToken = jwtDecode(token);
+      setStatus(decodedToken.status);
       setUser(decodedToken.user);
+      setToken(token);
       setIsLoggedIn(true);
       navigate("/home");
     } catch (error) {
@@ -89,10 +92,10 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     Cookies.remove("token");
     api.defaults.headers.Authorization = null
-    setToken(null)
+    setToken(null);
     setUser(null);
+    setStatus(null);
     setIsLoggedIn(false);
-
     navigate("/login");
   };
 
@@ -108,7 +111,8 @@ export const AuthProvider = ({ children }) => {
         isLoggedIn,
         login,
         logout,
-        user
+        user,
+        status,
       }}
     >
       {children}

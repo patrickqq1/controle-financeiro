@@ -28,6 +28,7 @@ import TableItens from '../../components/table/table';
 import CardValues from '../../components/cards/card';
 import FormMetas from '../../components/formMetas/form';
 import Goals from '../../components/cardGoals/goals';
+import ModalSalario from '../../components/modalsalario/Index';
 
 const Index = () => {
     const [loading, setLoading] = useState(true)
@@ -116,11 +117,11 @@ const Index = () => {
     }, [initMonth, finalMonth, update]);
 
     const somaSalario = () => {
-        const salarioMes = 1534
+        const salarioMes = 2400
         return (outputs / salarioMes) * 100
     }
     const qdGastar = () => {
-        const salarioMes = 500
+        const salarioMes = 1000
         return (inputs / salarioMes) * 100
     }
     const handleSubmit = async (e) => {
@@ -165,8 +166,9 @@ const Index = () => {
                 </InputGroup>
             </Flex>
             <Stack m={3} direction='row'>
-                <Button onClick={() => setIsOpen(true)} colorScheme='blue' isLoading={loading}>Lançar Entradas/Saídas</Button>
-                <Button onClick={() => setOpenMetas(true)} colorScheme='green' isLoading={loading}>Lançar Metas</Button>
+                <ModalSalario />
+                <Button color='black' onClick={() => setIsOpen(true)} colorScheme='blue' isLoading={loading}>Lançar Entradas/Saídas</Button>
+                <Button color='black' onClick={() => setOpenMetas(true)} colorScheme='green' isLoading={loading}>Lançar Metas</Button>
             </Stack>
             <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} motionPreset='slideInBottom'>
                 <ModalOverlay />
@@ -258,7 +260,7 @@ const Index = () => {
             {loading ? <Spinner size='xl' /> : <Stack direction='row' mb='10px' spacing='50px'>
                 <CardValues textin='Valor gasto' color="red.400" gasto={qdGastar()} valor={new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(inputs)} />
                 <CardValues textin='Valor recebido' color="green.400" gasto={somaSalario()} valor={new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(outputs)} />
-                <CardValues textin='Valor Total' color="orange.400" valor={new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(outputs - inputs)} isIndeterminate />
+                <CardValues textin='Valor Total' color="orange.400" valor={new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(outputs - inputs)} gasto='100' />
             </Stack>}
                 <Flex mb='2%' flexDirection='column'>
                     <TableItens getInfo={getInfo} setUpdate={setUpdate}/>

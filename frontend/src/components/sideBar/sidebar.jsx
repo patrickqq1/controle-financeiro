@@ -4,11 +4,12 @@ import { FaCoins } from "react-icons/fa"
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/authContext";
+import { RiAdminFill } from "react-icons/ri"
+
 
 const SidebarDrawer = () => {
-    const navigate = useNavigate()
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { user , logout } = useContext(AuthContext)     
+    const { user, logout, status } = useContext(AuthContext)
     return (
         <Flex
             position='fixed'
@@ -42,6 +43,17 @@ const SidebarDrawer = () => {
                                         width='100%'
                                     >Gastos por dia</Button>
                                 </Link>
+                                {status === '2' && (
+                                    <Link to="/admin">
+                                        <Button
+                                            colorScheme="twitter"
+                                            leftIcon={<RiAdminFill />}
+                                            width="100%"
+                                        >
+                                            Painel admin
+                                        </Button>
+                                    </Link>
+                                )}
                                 <Button colorScheme="red" leftIcon={<FiX />} onClick={logout}>Sair</Button>
                                 <Divider />
                                 <Flex justifyContent='center' textTransform='capitalize'><Text>Bem-vindo, {user}</Text>

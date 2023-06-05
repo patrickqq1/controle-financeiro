@@ -1,5 +1,5 @@
 import { Fragment, useContext } from "react";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import Index from "../pages/dashboard";
 import DayBalance from "../pages/dashboard/DayBalance";
 import Login from "../pages/login/login";
@@ -22,6 +22,23 @@ export const Public = ({children}) => {
     return children
 }
 
+export const Admin = ({ children }) => {
+    const navigate = useNavigate()
+    const { authenticated, status } = useContext(AuthContext);
+  
+    if (!authenticated) {
+      return <Navigate to="/login" />;
+    }
+  
+    if (status === '1') {
+        return <>
+            <h3>Voce não tem permissão para entrar aqui</h3>
+        </>
+    }
+  
+    return children
+};
+
 const RoutesApp = () => {
     return (
         <Fragment>
@@ -32,7 +49,7 @@ const RoutesApp = () => {
                     <Route exact path="/register" element={<Public><Register /></Public>} />
                     <Route exact path="/home" element={<Private><Index /></Private>} />
                     <Route exact path="/saldodia" element={<Private><DayBalance /></Private>} />
-                    <Route exact path="/admin" element={<Private><AdminDashboard /></Private>} />
+                    <Route exact path="/admin" element={<Admin><AdminDashboard /></Admin>} />
                     <Route exact path="*" element={<div>404 NOTFOUND</div>}/>
                 </Routes>
             </AuthProvider>

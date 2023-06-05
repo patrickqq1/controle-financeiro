@@ -10,7 +10,7 @@ const CardValues = ({ textin, color, valor, isIndeterminate, gasto }) => {
                     justifyContent='center'
                     direction='column'
                 >
-                    <CircularProgress isIndeterminate={isIndeterminate} value={gasto} color={color} size='130px'>
+                    <CircularProgress value={gasto} color={color} size='130px'>
                         <CircularProgressLabel fontSize='20px'>{valor}</CircularProgressLabel>
                     </CircularProgress>
                     <Text>{textin}</Text>
