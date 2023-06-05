@@ -32,6 +32,17 @@ export const AuthProvider = ({ children }) => {
     checkAuth()
   }, [token])
 
+  useEffect(() => {
+    try {
+      if (token) {
+        const decodedToken = jwtDecode(token);
+        setStatus(decodedToken.status);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [token]);
+
   const expiresIn = () => {
     const expirationDate = new Date();
     expirationDate.setTime(expirationDate.getTime() + 60 * 60 * 1000);
@@ -47,11 +58,10 @@ export const AuthProvider = ({ children }) => {
       const expiresinhours = expiresIn();
       Cookies.set("token", token, { expires: expiresinhours });
       api.defaults.headers.Authorization = `Bearer ${token}`;
-  
       const decodedToken = jwtDecode(token);
+      setToken(token);
       setStatus(decodedToken.status);
       setUser(decodedToken.user);
-      setToken(token);
       setIsLoggedIn(true);
       navigate("/home");
     } catch (error) {
@@ -98,7 +108,7 @@ export const AuthProvider = ({ children }) => {
     setIsLoggedIn(false);
     navigate("/login");
   };
-
+  
   const isAutenticated = () => {
     return Cookies.get('token') ? true : false
   }

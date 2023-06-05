@@ -3,6 +3,7 @@ import { createFinancs, deleteFinancs, editFinancs, financsSoma, insertSaldoDiar
 import { createGoal, deleteGoal, removeGoal, renderGoal, updateGoal } from '../controllers/goalController.js';
 import { createUser, getUserData, getUsers } from '../controllers/usersController.js';
 import { userValidation } from '../middlewares/valdidateToken.js';
+import { createSalaryQuote, quoteSalaryAdd, updateSalaryQuote } from '../controllers/salaryController.js';
 
 const router = express.Router();
 router.post("/post/user", createUser);
@@ -22,5 +23,8 @@ router.delete("/delete/goals/:id", deleteGoal);
 router.get("/financssoma", financsSoma);
 router.get("/minussoma", minusSoma);
 router.get("/getusers", getUsers);
+router.get('/getsalary', quoteSalaryAdd);
+router.post('/createsalary', createSalaryQuote);
+router.put('/updatesalary/:id', updateSalaryQuote);
 
 export default router;

@@ -16,6 +16,14 @@ const DayBalance = () => {
     }
 
     useEffect(() => {
+        const currentDate = new Date();
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const year = currentDate.getFullYear();
+        setSelectedMonth(`${year}-${month}`);
+      }, []);
+    
+
+    useEffect(() => {
         getInfo()
     }, [selectedMonth])
 
