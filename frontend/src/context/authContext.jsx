@@ -9,7 +9,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const toast = useToast()
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const [ user, setUser ] = useState(null);
   const [ token, setToken ] = useState(null);
   const [ status, setStatus ] = useState(null);
@@ -48,6 +48,14 @@ export const AuthProvider = ({ children }) => {
     expirationDate.setTime(expirationDate.getTime() + 60 * 60 * 1000);
     return expirationDate
   }
+
+  const setInfo = async (token) => {
+    const decodedToken = jwtDecode(token)
+    setToken(token)
+    setStatus(decodedToken.status)
+    setUser(decodedToken.user)
+    setIsLoggedIn(true)
+  }
   const login = async (email, password) => {
     try {
       const response = await api.post("/post/login", {
@@ -58,12 +66,8 @@ export const AuthProvider = ({ children }) => {
       const expiresinhours = expiresIn();
       Cookies.set("token", token, { expires: expiresinhours });
       api.defaults.headers.Authorization = `Bearer ${token}`;
-      const decodedToken = jwtDecode(token);
-      setToken(token);
-      setStatus(decodedToken.status);
-      setUser(decodedToken.user);
-      setIsLoggedIn(true);
-      navigate("/home");
+      await setInfo(token)
+      navigate("/home")
     } catch (error) {
       console.error(error);
 

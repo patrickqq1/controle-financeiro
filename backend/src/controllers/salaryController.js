@@ -35,12 +35,12 @@ export const createSalaryQuote = async (req, res) => {
 }
 
 export const updateSalaryQuote = async (req, res) => {
-    const userId = req.id;
+    const { id } = req.params;
     const { salary, quote } = req.body;
 
     try {
         await db("dados_user")
-            .where({ userId })
+            .where('id', id)
             .update({ salario: salary, cota_mensal: quote });
 
         return res.status(200).json({
