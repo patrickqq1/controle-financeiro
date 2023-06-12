@@ -68,6 +68,7 @@ const Index = () => {
     const [initMonth, setInitMonth] = useState(initialMonth)
     const [finalMonth, setFinalMonth] = useState(lastDayMonth)
     const [goals, setGoals] = useState([])
+    const [salary, setSalary] = useState([])
     const [update, setUpdate] = useState(false)
 
     const getSomasInputs = () => {
@@ -101,8 +102,17 @@ const Index = () => {
             });
     }
 
-    useEffect(() => {
+    const getSalario = async() => {
+        try {
+            const response = await api.get("/getsalary")
+            setSalary(response.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
+    useEffect(() => {
+        getSalario()
         getSomasInputs();
         getSomasOutputs();
         getGoalsData();
@@ -117,13 +127,29 @@ const Index = () => {
     }, [initMonth, finalMonth, update]);
 
     const somaSalario = () => {
-        const salarioMes = 2400
-        return (outputs / salarioMes) * 100
-    }
+        let soma = 0;
+        salary.forEach((item) => {
+            const salarioMes = item.salario;
+            soma += salarioMes;
+        });
+    
+        const porcentagem = ((outputs - inputs) / soma) * 100;
+        return porcentagem.toFixed(2);
+    };    
+      
     const qdGastar = () => {
-        const salarioMes = 1000
-        return (inputs / salarioMes) * 100
-    }
+        let soma = 0;
+        salary.forEach((item) => {
+            const salarioMes = item.cota_mensal;
+            soma += salarioMes;
+        });
+    
+        const porcentagem = (inputs / soma) * 100;
+        return porcentagem.toFixed(2);
+    };
+    
+      
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         const response = await api.post("/registerfinanc", { desc, value, date, type })

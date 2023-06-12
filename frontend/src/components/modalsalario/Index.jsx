@@ -57,8 +57,8 @@ const ModalSalario = () => {
   };
 
   useEffect(() => {
+      mapearSalario()
      getInfo()
-     mapearSalario()
   }, [])
 
   return (
