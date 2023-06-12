@@ -6,6 +6,7 @@ import Login from "../pages/login/login";
 import Register from "../pages/register/Register";
 import { AuthContext, AuthProvider } from "../context/authContext";
 import AdminDashboard from "../pages/dashboard/adminDashboard";
+import ErrorPage from "../pages/notFound";
 
 export const Private = ({ children }) => {
     const { authenticated } = useContext(AuthContext)
@@ -49,7 +50,7 @@ const RoutesApp = () => {
                 <Route exact path="/home" element={<Private><Index /></Private>} />
                 <Route exact path="/saldodia" element={<Private><DayBalance /></Private>} />
                 <Route exact path="/admin" element={<Admin><AdminDashboard /></Admin>} />
-                <Route exact path="*" element={<div>404 NOTFOUND</div>} />
+                <Route exact path="*" element={<ErrorPage />} />
             </Routes>
         </Fragment>
     );
