@@ -133,7 +133,7 @@ const Index = () => {
             soma += salarioMes;
         });
     
-        const porcentagem = ((outputs - inputs) / soma) * 100;
+        const porcentagem = ((outputs - inputs) / parseFloat(soma)) * 100;
         return porcentagem.toFixed(2);
     };    
       
@@ -144,7 +144,7 @@ const Index = () => {
             soma += salarioMes;
         });
     
-        const porcentagem = (inputs / soma) * 100;
+        const porcentagem = (inputs / parseFloat(soma)) * 100;
         return porcentagem.toFixed(2);
     };
     

@@ -21,29 +21,30 @@ const ModalSalario = () => {
   const [quote, setQuote] = useState('');
   const [info, setInfo] = useState([]);
 
-
   const getInfo = async () => {
     try {
       const response = await api.get('/getsalary');
+      const data = response.data[0];
       setInfo(response.data);
+      if (data) {
+        const { salario, cota_mensal } = data;
+        setSalary(salario);
+        setQuote(cota_mensal);
+      } else {
+        setSalary('0');
+        setQuote('0');
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
-  const mapearSalario = async () => info.map((item) => {
-     setSalary(item.salario)
-     setQuote(item.cota_mensal)
-  })
-
-
   const addSalaryQuote = async () => {
     try {
-      const existingSalary = info.map((item) => item.salario)[0];
-      const id = info.map((item) => item.id)[0];
-      console.log(existingSalary, id);
+      const existingSalary = info[0]?.salario;
+      const id = info[0]?.id;
       if (existingSalary) {
-        await api.put(`/updatesalary/${id}`, { salary ,quote });
+        await api.put(`/updatesalary/${id}`, { salary, quote });
       } else {
         await api.post('/createsalary', { salary, quote });
       }
@@ -57,9 +58,8 @@ const ModalSalario = () => {
   };
 
   useEffect(() => {
-      mapearSalario()
-     getInfo()
-  }, [])
+    getInfo();
+  }, []);
 
   return (
     <>
@@ -79,18 +79,22 @@ const ModalSalario = () => {
           <ModalHeader>Salário e meta mensal</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {info.map((item) => (
-              <Stack key={item.id} mb="2">
-                <Text>
-                  Seu salário é:
-                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.salario)}
-                </Text>
-                <Text>
-                  Sua cota é:
-                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.cota_mensal)}
-                </Text>
-              </Stack>
-            ))}
+            {info.length > 0 ? (
+              info.map((item) => (
+                <Stack key={item.id} mb="2">
+                  <Text>
+                    Seu salário é:{' '}
+                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.salario)}
+                  </Text>
+                  <Text>
+                    Sua cota é:{' '}
+                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.cota_mensal)}
+                  </Text>
+                </Stack>
+              ))
+            ) : (
+              <Text mb="5">Não há informações de salário disponíveis.</Text>
+            )}
             <Stack>
               <Input
                 type="text"
@@ -109,7 +113,7 @@ const ModalSalario = () => {
           <ModalFooter>
             <Stack direction="row">
               <Button colorScheme="green" onClick={addSalaryQuote}>
-                Adicionar
+                {salary === 0 ? 'Ajustar' : 'Adicionar'}
               </Button>
               <Button
                 onClick={onClose}

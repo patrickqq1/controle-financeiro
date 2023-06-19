@@ -37,7 +37,7 @@ const DayBalance = () => {
                     onChange={(e) => setSelectedMonth(e.target.value)}
                 />
             </Flex>
-            <Stack flexWrap="wrap" direction='row' m='3%'  alignItems="center" justifyContent="center">
+            <Flex flexWrap="wrap" direction='row' m='3%'  alignItems="center" justifyContent="center">
                 {data.map((item) => (
                     <Card bg='blue.200' m="10px" borderRadius='lg' boxShadow='md' p={4} key={item.id}>
                         <CardBody>
@@ -50,7 +50,7 @@ const DayBalance = () => {
                         </CardBody>
                     </Card>
                 ))}
-            </Stack>
+            </Flex>
         </Flex>
     )
 }
