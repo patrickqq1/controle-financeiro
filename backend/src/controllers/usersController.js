@@ -41,7 +41,7 @@ export const getUsers = async (req,res) => {
   } catch (error) {
     console.error(error)
     return res.status(500).json({
-      message: 'Erro ao buscar tabelas'
+      message: 'ERRO INTERNO NO SERVIDOR'
     })
   }
 }
@@ -75,7 +75,7 @@ export const updatePassword = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      message: 'Ocorreu um erro ao alterar a senha!',
+      message: 'ERRO INTERNO NO SERVIDOR',
     });
   }
 };
@@ -88,7 +88,7 @@ export const getUserData = async (req, res) => {
   
       if (users.length === 0) {
         res.status(404).json({
-          message: 'Usuário não encontrado',
+          message: 'Usuario nao encontrado',
         });
       } else {
         const user = users[0];
@@ -113,7 +113,7 @@ export const getUserData = async (req, res) => {
     } catch (error) {
       console.error(error);
       res.status(500).json({
-        message: 'Ocorreu um erro ao buscar o usuário',
+        message: 'ERRO INTERNO NO SERVIDOR',
       });
     }
   };

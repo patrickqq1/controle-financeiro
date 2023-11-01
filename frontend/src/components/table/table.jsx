@@ -32,7 +32,10 @@ const TableItens = ({ getInfo, setUpdate }) => {
         <>
             {getInfo.map((item) => (
                 <Flex
-                    w='600px'
+                    w={{
+                        base: '100%',
+                        md: '100%'
+                    }}
                     bg='white'
                     mt='3%'
                     key={item.id}

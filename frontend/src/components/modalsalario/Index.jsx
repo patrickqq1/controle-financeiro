@@ -65,8 +65,8 @@ const ModalSalario = () => {
     <>
       <Button
         onClick={onOpen}
-        bg="yellow"
-        color="black"
+        bg="gray.500"
+        color="white"
         _hover={{
           background: '#949b03',
         }}

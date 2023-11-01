@@ -19,7 +19,8 @@ import {
     ModalBody,
     Button,
     Spinner,
-    FormLabel
+    FormLabel,
+    Text
 } from '@chakra-ui/react';
 import { GoPlus } from 'react-icons/go'
 import { FcMoneyTransfer } from 'react-icons/fc'
@@ -134,7 +135,7 @@ const Index = () => {
         });
     
         const porcentagem = ((outputs - inputs) / parseFloat(soma)) * 100;
-        return porcentagem.toFixed(2);
+        return parseInt(porcentagem)
     };    
       
     const qdGastar = () => {
@@ -145,7 +146,7 @@ const Index = () => {
         });
     
         const porcentagem = (inputs / parseFloat(soma)) * 100;
-        return porcentagem.toFixed(2);
+        return parseInt(porcentagem)
     };
     
       
@@ -178,23 +179,43 @@ const Index = () => {
             direction='column'
             alignItems='center'
             justifyContent='center'
-            bg='green.200'
-            minH='100vh'
+            bg='gray.200'
+            minH={{
+                base: '667px',
+                md: '100vh'
+            }}
+            minW={{
+                base: '375px'
+            }}
         >
-            <Flex mt={3} dir='row'>
-                <InputGroup mr={2} alignItems='center'>
+            <Flex mt={3} direction={{
+                base: "column",
+                md: "row"
+            }}>
+                <InputGroup mr={{
+                base: 0,
+                md: 2
+            }} alignItems='center'>
                     <FormLabel>De:</FormLabel>
                     <Input bg='white' type='date' value={initMonth} onChange={(e) => setInitMonth(e.target.value)} />
                 </InputGroup>
-                <InputGroup ml={2} alignItems='center'>
+                <InputGroup mt={{
+                    base: "2"
+                }} ml={{
+                base: 0,
+                md: 2
+            }} alignItems='center'>
                     <FormLabel>Até:</FormLabel>
                     <Input bg='white' type='date' value={finalMonth} onChange={(e) => setFinalMonth(e.target.value)} />
                 </InputGroup>
             </Flex>
-            <Stack m={3} direction='row'>
+            <Stack m={3} direction={{
+                base: "column",
+                md: "row"
+            }}>
                 <ModalSalario />
-                <Button color='black' onClick={() => setIsOpen(true)} colorScheme='blue' isLoading={loading}>Lançar Entradas/Saídas</Button>
-                <Button color='black' onClick={() => setOpenMetas(true)} colorScheme='green' isLoading={loading}>Lançar Metas</Button>
+                <Button color='white' onClick={() => setIsOpen(true)} colorScheme='red'>Lançar Entradas/Saídas</Button>
+                <Button color='white' onClick={() => setOpenMetas(true)} colorScheme='whatsapp'>Lançar Metas</Button>
             </Stack>
             <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} motionPreset='slideInBottom'>
                 <ModalOverlay />
@@ -283,12 +304,15 @@ const Index = () => {
                     />
                 ))}
             </Stack>
-            {loading ? <Spinner size='xl' /> : <Stack direction='row' mb='10px' spacing='50px'>
+            {loading ? <Spinner size='xl' /> : <Stack direction={{
+                base: "column",
+                md: "row"
+            }} mb='10px' spacing='10px'>
                 <CardValues textin='Valor gasto' color="red.400" gasto={qdGastar()} valor={new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(inputs)} />
                 <CardValues textin='Valor recebido' color="green.400" gasto={somaSalario()} valor={new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(outputs)} />
                 <CardValues textin='Valor Total' color="orange.400" valor={new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(outputs - inputs)} gasto='100' />
             </Stack>}
-                <Flex mb='2%' flexDirection='column'>
+                <Flex mb='2%' p="5" flexDirection='column'>
                     <TableItens getInfo={getInfo} setUpdate={setUpdate}/>
                 </Flex>
         </Flex>
