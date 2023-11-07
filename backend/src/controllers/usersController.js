@@ -13,7 +13,6 @@ export const createUser = async (req, res) => {
         message: 'Este email já está em uso!'
       })
     }
-
     await db('usuarios').insert({
       nome: name,
       email: email,
