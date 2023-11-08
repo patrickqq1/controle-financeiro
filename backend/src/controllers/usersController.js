@@ -85,7 +85,7 @@ export const getUserData = async (req, res) => {
       const results = await db.raw('SELECT * FROM usuarios WHERE email = ?', [email]);
       const users = results[0];
   
-      if (users.length === 0) {
+      if (!users) {
         res.status(404).json({
           message: 'Usuario nao encontrado',
         });
