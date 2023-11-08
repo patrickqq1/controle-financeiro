@@ -112,7 +112,7 @@ export const getUserData = async (req, res) => {
     } catch (error) {
       console.error(error);
       res.status(500).json({
-        message: 'ERRO INTERNO NO SERVIDOR',
+        message: 'ERRO INTERNO NO SERVIDOR ' + error,
       });
     }
   };
