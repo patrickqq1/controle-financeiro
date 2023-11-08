@@ -2,7 +2,7 @@ import axios from 'axios'
 import Cookies from "js-cookie"
 
 export const api = axios.create({
-    baseURL: process.env.URL_API
+    baseURL: 'https://back-financ.onrender.com'
 })
 
 api.interceptors.request.use((config) => {

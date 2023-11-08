@@ -14,5 +14,4 @@ const getEnviroment = () => {
       throw new Error("Defina a variavel de ambiente!");
   }
 };
-
 export const db = knex(getEnviroment());

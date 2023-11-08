@@ -20,5 +20,5 @@ app.use(express.json())
 app.use(routes)
 
 app.listen(port, () => {
-    console.log('Servidor iniciado na porta 8800')
+    console.log('Servidor iniciado na porta ' + port)
 } )
