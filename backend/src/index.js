@@ -3,7 +3,8 @@ import cors from 'cors'
 import routes from './routes/routes.js'
 import cron from 'node-cron'
 import { insertSaldoDiario } from './controllers/financController.js'
-require('dotenv').config()
+import dotenv from "dotenv"
+dotenv.config()
 
 cron.schedule('35 23 * * *', () => {
   insertSaldoDiario();

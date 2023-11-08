@@ -1,6 +1,8 @@
 import knex from "knex";
 import pkg from "./knex/knexfile.cjs"
-const { dbConfig } = pkg;
+const dbConfig = pkg;
+import dotenv from "dotenv"
+dotenv.config()
 
 const getEnviroment = () => {
   switch (process.env.NODE_ENV) {
